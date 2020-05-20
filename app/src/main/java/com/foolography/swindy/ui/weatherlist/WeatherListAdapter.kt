@@ -33,12 +33,19 @@ class WeatherListAdapter(
             binding.apply {
                 cityData = item
                 binding.cityCard.setOnClickListener { listener.onItemClick(item) }
+                binding.cityCard.setOnLongClickListener {
+                    listener.onLongClick(item)
+
+
+                }
             }
         }
     }
 
     interface OnItemClickListener {
         fun onItemClick(item: CityData)
+        fun onLongClick(item: CityData): Boolean
     }
+
 
 }

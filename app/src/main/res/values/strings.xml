@@ -4,4 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty">Wow , So Empty ! Start by adding some Cities</string>
+    <string name="continues">Continue</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_a_city">Add a City ....</string>
 </resources>

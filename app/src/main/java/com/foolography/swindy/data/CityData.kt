@@ -23,7 +23,9 @@ data class CityData(
     @field:SerializedName("id")
     val id: Long,
     @field:SerializedName("name")
-    val name: String
+    val name: String,
+    @field:SerializedName("cod")
+    val code: Int
 ) : Parcelable {
     fun getParsedDate(): String {
         return try {

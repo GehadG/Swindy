@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.foolography.swindy.databinding.AddCityLayoutBinding
 import com.foolography.swindy.di.Injectable
 import com.foolography.swindy.di.injectViewModel
-import com.foolography.swindy.ui.weatherlist.WeatherListViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.add_city_layout.*
 import javax.inject.Inject
 
 class AddCityFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: WeatherListViewModel
+    private lateinit var viewModel: AddCityViewModel
     private lateinit var binding: AddCityLayoutBinding
 
     override fun onCreateView(
@@ -30,6 +32,36 @@ class AddCityFragment : Fragment(), Injectable {
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        cancelBtn.setOnClickListener {
+            activity?.onBackPressed()
+        }
+        continueBtn.setOnClickListener {
+
+            if (viewModel.isValidCity(cityName.text.toString())) {
+                viewModel.validateCity(cityName.text.toString())
+                    .observe(viewLifecycleOwner, Observer {
+                        if (it.code == 200) {
+                            viewModel.saveCity(it.id)
+                        } else {
+                            showError("Sorry , We couldn't find this city in our Database")
+                        }
+                    })
+            } else {
+                showError("Please Enter a valid city name")
+            }
+        }
+
+    }
+
+    private fun showError(s: String) {
+        view?.let {
+            Snackbar.make(it, s, Snackbar.LENGTH_LONG)
+                .show()
+        };
     }
 
 }

@@ -19,6 +19,8 @@ class WeatherListViewModel @Inject constructor(
     var scrollPosition = MutableLiveData<Int>().apply { value = 0 }
     var isShowProgress = MutableLiveData<Int>().apply { value = View.VISIBLE }
     var showEmptyState = MutableLiveData<Boolean>().apply { value = appStorage.isEmpty() }
+    var storageWatcher =
+        MutableLiveData<ArrayList<String>>().apply { value = appStorage.getAllCities() }
     val weatherList by lazy {
         weatherDataRepository.getAllWeatherDetails(
             prepareList()
@@ -27,12 +29,16 @@ class WeatherListViewModel @Inject constructor(
 
     fun isListEmpty() = appStorage.isEmpty()
     fun loadWeather(): LiveData<WeatherResponse> {
-        var preparedList: String? = prepareList()
+        var preparedList: String = prepareList()
         return weatherDataRepository.getAllWeatherDetails(preparedList)
     }
 
-    private fun prepareList(): String? {
-        return appStorage.getAllCities()?.joinToString(separator = ",")
+    private fun prepareList(): String {
+        return appStorage.getAllCities().joinToString(separator = ",")
+    }
+
+    fun deleteCity(id: Long) {
+        appStorage.deleteCity(id.toString())
     }
 
 }

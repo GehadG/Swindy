@@ -15,6 +15,7 @@ import com.foolography.swindy.data.CityData
 import com.foolography.swindy.databinding.WeatherListLayoutBinding
 import com.foolography.swindy.di.Injectable
 import com.foolography.swindy.di.injectViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.weather_list_layout.*
 import javax.inject.Inject
 
@@ -49,18 +50,20 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
 
 
         viewModel.weatherList.observe(viewLifecycleOwner, Observer { newsResponse ->
-            populateNewsList(newsResponse.citiesList)
+            populateList(newsResponse.citiesList)
             viewModel.isShowProgress.value = View.GONE
 
         })
         insertCityBtn.setOnClickListener {
-            println("I AM IN BUTTON ")
             findNavController().navigate(R.id.action_weatherListFragment_to_addCityFragment)
         }
         if (viewModel.isListEmpty()) {
             viewModel.isShowProgress.value = View.GONE
             binding.swipeRefresh.isRefreshing = false
         }
+        viewModel.storageWatcher.observe(viewLifecycleOwner, Observer {
+            reloadCities()
+        })
 
     }
 
@@ -70,7 +73,7 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
             (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
     }
 
-    private fun populateNewsList(citiesList: List<CityData>) {
+    private fun populateList(citiesList: List<CityData>) {
         mAdapter = WeatherListAdapter(citiesList, context!!, this)
         binding.recyclerView.adapter = mAdapter
         recyclerView.addItemDecoration(
@@ -80,19 +83,58 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
             )
         )
         binding.recyclerView.scrollToPosition(viewModel.scrollPosition.value!!)
-
         binding.swipeRefresh.setOnRefreshListener {
-            if (!viewModel.isListEmpty()) {
-                viewModel.loadWeather().observe(viewLifecycleOwner, Observer {
-                    populateNewsList(it.citiesList)
-                    binding.swipeRefresh.isRefreshing = false
-                })
-            }
+            reloadCities()
         }
+    }
+
+    private fun reloadCities() {
+        if (!viewModel.isListEmpty()) {
+            binding.swipeRefresh.isRefreshing = true
+            viewModel.loadWeather().observe(viewLifecycleOwner, Observer {
+                if (it.code == "404") {
+                    showEmptyState()
+
+                } else {
+                    viewModel.showEmptyState.value = false
+                    populateList(it.citiesList)
+                }
+
+                binding.swipeRefresh.isRefreshing = false
+            })
+        } else {
+            showEmptyState()
+        }
+
+    }
+
+    private fun showEmptyState() {
+        binding.swipeRefresh.isRefreshing = false
+        populateList(emptyList())
+        viewModel.isShowProgress.value = View.GONE
+        viewModel.showEmptyState.value = true
     }
 
     override fun onItemClick(item: CityData) {
 
+    }
+
+    override fun onLongClick(item: CityData): Boolean {
+        context?.let {
+            MaterialAlertDialogBuilder(it)
+                .setTitle("Delete City ?")
+                .setMessage("Are you sure you want to delete ${item.name} from the list")
+                .setNegativeButton("Cancel") { dialog, which ->
+                    // Respond to negative button press
+                }
+                .setPositiveButton("Confirm") { dialog, which ->
+                    viewModel.deleteCity(item.id)
+                    reloadCities()
+                }
+                .show()
+        }
+
+        return true
     }
 
     companion object {
