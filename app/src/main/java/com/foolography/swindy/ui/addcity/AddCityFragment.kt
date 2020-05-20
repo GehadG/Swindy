@@ -49,7 +49,7 @@ class AddCityFragment : Fragment(), Injectable {
                     .observe(viewLifecycleOwner, Observer {
                         if (it.status == Status.SUCCESS) {
                             viewModel.saveCity(it.data!!.id)
-                            val bundle = bundleOf("cityData" to it)
+                            val bundle = bundleOf("cityData" to it.data!!)
                             findNavController().navigate(
                                 R.id.action_addCityFragment_to_cityDetailFragment,
                                 bundle
