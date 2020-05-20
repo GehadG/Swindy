@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.foolography.swindy.R
+import com.foolography.swindy.api.Status
 import com.foolography.swindy.databinding.AddCityLayoutBinding
 import com.foolography.swindy.di.Injectable
 import com.foolography.swindy.di.injectViewModel
@@ -43,24 +44,25 @@ class AddCityFragment : Fragment(), Injectable {
             activity?.onBackPressed()
         }
         continueBtn.setOnClickListener {
-
             if (viewModel.isValidCity(cityName.text.toString())) {
                 viewModel.validateCity(cityName.text.toString())
                     .observe(viewLifecycleOwner, Observer {
-                        if (it.code == 200) {
-                            viewModel.saveCity(it.id)
+                        if (it.status == Status.SUCCESS) {
+                            viewModel.saveCity(it.data!!.id)
                             val bundle = bundleOf("cityData" to it)
                             findNavController().navigate(
                                 R.id.action_addCityFragment_to_cityDetailFragment,
                                 bundle
                             )
-                        } else {
+                        } else if (it.status == Status.ERROR) {
                             showError("Sorry , We couldn't find this city in our Database")
                         }
                     })
             } else {
                 showError("Please Enter a valid city name")
             }
+
+
         }
 
     }

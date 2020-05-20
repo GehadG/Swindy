@@ -27,6 +27,7 @@ data class CityData(
     @field:SerializedName("cod")
     val code: Int
 ) : Parcelable {
+
     fun getParsedDate(): String {
         return try {
             val sdf = SimpleDateFormat("E, dd.MM.yyyy")

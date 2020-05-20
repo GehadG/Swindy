@@ -2,6 +2,7 @@ package com.foolography.swindy.ui.addcity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.foolography.swindy.api.Resource
 import com.foolography.swindy.api.WeatherDataRepository
 import com.foolography.swindy.data.CityData
 import com.foolography.swindy.util.AppStorage
@@ -18,7 +19,7 @@ class AddCityViewModel @Inject constructor(
         return !city.isNullOrBlank()
     }
 
-    fun validateCity(city: String): LiveData<CityData> {
+    fun validateCity(city: String): LiveData<Resource<CityData>> {
         return weatherDataRepository.getCityData(city)
     }
 

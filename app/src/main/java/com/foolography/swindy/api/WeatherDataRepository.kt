@@ -22,13 +22,13 @@ class WeatherDataRepository @Inject constructor(private val service: WeatherServ
         }
     }
 
-    fun getCityData(city: String): LiveData<CityData> {
+    fun getCityData(city: String): LiveData<Resource<CityData>> {
         return liveData(Dispatchers.IO) {
             try {
                 val weatherList = service.getCityData(city)
-                emit(weatherList)
+                emit(Resource(Status.SUCCESS, weatherList, null))
             } catch (er: Exception) {
-                er.printStackTrace()
+                emit(Resource(Status.ERROR, null, "City Not Found"))
             }
         }
     }
