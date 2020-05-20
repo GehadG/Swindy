@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        tools:context=".ui.citydetail.CityDetailFragment">
+
+        <ImageView
+            android:id="@+id/imageHumidity"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_humidity"
+            android:tint="@color/icons"
+            app:layout_constraintStart_toStartOf="@id/separator"
+            app:layout_constraintTop_toBottomOf="@id/separator"></ImageView>
+
+        <ImageView
+            android:id="@+id/imagePressure"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_pressure"
+            android:tint="@color/icons"
+            app:layout_constraintStart_toStartOf="@id/separator2"
+            app:layout_constraintTop_toBottomOf="@id/separator2"></ImageView>
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentTime">
+
+            <ImageView
+                android:id="@+id/weatherImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:imageFromUrl="@{cityData.getDetailedLogo}" />
+
+            <TextView
+                android:id="@+id/currentTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/roboto"
+                android:text="@{String.valueOf(Math.round(cityData.main.currentTemp))+'°'}"
+                android:textColor="@color/icons"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/cityName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center_horizontal"
+            android:text="@{cityData.name}"
+            android:textColor="@color/icons"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center_horizontal"
+            android:paddingBottom="6dp"
+            android:text="@{cityData.parsedDate}"
+            android:textColor="@color/divider"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityName" />
+
+        <TextView
+            android:id="@+id/minMaxTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:gravity="center"
+            android:text='@{String.valueOf(Math.round(cityData.main.minimumTemp))+"° / "+String.valueOf(Math.round(cityData.main.maximumTemp))+"°  | Feels Like "+String.valueOf(Math.round(cityData.main.feelsLike))+"°"}'
+            android:textColor="@color/icons"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container" />
+
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center_horizontal"
+            android:paddingBottom="6dp"
+            android:text='@{"Humidity : "+cityData.main.humidity+"%"}'
+            android:textColor="@color/icons"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/imageHumidity"
+            app:layout_constraintTop_toBottomOf="@+id/separator" />
+
+        <TextView
+            android:id="@+id/pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center_horizontal"
+            android:paddingBottom="6dp"
+            android:text='@{"Pressure : "+cityData.main.pressure}'
+            android:textColor="@color/icons"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/imagePressure"
+            app:layout_constraintTop_toBottomOf="@+id/separator2" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/minMaxTemp" />
+
+        <View
+            android:id="@+id/separator2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageHumidity" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="cityData"
+            type="com.foolography.swindy.data.CityData" />
+
+    </data>
+</layout>

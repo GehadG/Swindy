@@ -1,6 +1,7 @@
 package com.foolography.swindy.di
 
 import com.foolography.swindy.ui.addcity.AddCityFragment
+import com.foolography.swindy.ui.citydetails.CityDetailFragment
 import com.foolography.swindy.ui.weatherlist.WeatherListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -14,4 +15,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAddCityFragment(): AddCityFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeCityDetailFragment(): CityDetailFragment
 }

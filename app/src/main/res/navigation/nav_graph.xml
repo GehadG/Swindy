@@ -16,10 +16,26 @@
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_fade_enter"
             app:popExitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/action_weatherListFragment_to_cityDetailFragment"
+            app:destination="@id/cityDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCityFragment"
         android:name="com.foolography.swindy.ui.addcity.AddCityFragment"
         android:label="add_city_layout"
-        tools:layout="@layout/add_city_layout" />
+        tools:layout="@layout/add_city_layout">
+        <action
+            android:id="@+id/action_addCityFragment_to_cityDetailFragment"
+            app:destination="@id/cityDetailFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit"
+            app:popUpTo="@id/weatherListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityDetailFragment"
+        android:name="com.foolography.swindy.ui.citydetails.CityDetailFragment"
+        android:label="CityDetailFragment"></fragment>
 </navigation>

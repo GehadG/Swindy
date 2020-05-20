@@ -41,6 +41,10 @@ data class CityData(
     fun getLogo(): String {
         return "http://openweathermap.org/img/wn/${weather[0].icon}.png"
     }
+
+    fun getDetailedLogo(): String {
+        return "http://openweathermap.org/img/wn/${weather[0].icon}@4x.png"
+    }
 }
 
 @Parcelize
@@ -77,6 +81,8 @@ data class MainData(
     val pressure: Double,
     @field:SerializedName("humidity")
     val humidity: Double,
+    @field:SerializedName("feels_like")
+    val feelsLike: Double,
     @field:SerializedName("temp_min")
     val minimumTemp: Double,
     @field:SerializedName("temp_max")

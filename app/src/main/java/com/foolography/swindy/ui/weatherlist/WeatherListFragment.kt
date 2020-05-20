@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,7 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         viewModel = injectViewModel(viewModelFactory)
         binding = WeatherListLayoutBinding.inflate(inflater, container, false)
         context ?: return binding.root
@@ -116,7 +118,8 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
     }
 
     override fun onItemClick(item: CityData) {
-
+        val bundle = bundleOf("cityData" to item)
+        findNavController().navigate(R.id.action_weatherListFragment_to_cityDetailFragment, bundle)
     }
 
     override fun onLongClick(item: CityData): Boolean {
