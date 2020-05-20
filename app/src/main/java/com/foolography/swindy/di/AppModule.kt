@@ -12,7 +12,6 @@ import javax.inject.Singleton
 @Module(includes = [ViewModelModule::class, HelperModule::class])
 class AppModule {
 
-
     @Singleton
     @Provides
     fun provideWeatherService(

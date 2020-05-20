@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.foolography.swindy.R
 import com.foolography.swindy.data.CityData
 import com.foolography.swindy.databinding.WeatherListLayoutBinding
 import com.foolography.swindy.di.Injectable
@@ -24,12 +26,6 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
     private lateinit var viewModel: WeatherListViewModel
     private lateinit var mAdapter: WeatherListAdapter
     private lateinit var binding: WeatherListLayoutBinding
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +53,14 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
             viewModel.isShowProgress.value = View.GONE
 
         })
+        insertCityBtn.setOnClickListener {
+            println("I AM IN BUTTON ")
+            findNavController().navigate(R.id.action_weatherListFragment_to_addCityFragment)
+        }
+        if (viewModel.isListEmpty()) {
+            viewModel.isShowProgress.value = View.GONE
+            binding.swipeRefresh.isRefreshing = false
+        }
 
     }
 
@@ -78,14 +82,17 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
         binding.recyclerView.scrollToPosition(viewModel.scrollPosition.value!!)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.loadWeather().observe(viewLifecycleOwner, Observer {
-                populateNewsList(it.citiesList)
-                binding.swipeRefresh.isRefreshing = false
-            })
+            if (!viewModel.isListEmpty()) {
+                viewModel.loadWeather().observe(viewLifecycleOwner, Observer {
+                    populateNewsList(it.citiesList)
+                    binding.swipeRefresh.isRefreshing = false
+                })
+            }
         }
     }
 
     override fun onItemClick(item: CityData) {
+
     }
 
     companion object {

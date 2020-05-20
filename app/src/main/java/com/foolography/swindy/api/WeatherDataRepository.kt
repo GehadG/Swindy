@@ -10,11 +10,11 @@ import javax.inject.Singleton
 @Singleton
 class WeatherDataRepository @Inject constructor(private val service: WeatherService) {
 
-    fun getAllWeatherDetails(): LiveData<WeatherResponse> {
+    fun getAllWeatherDetails(cities: String?): LiveData<WeatherResponse> {
         return liveData(Dispatchers.IO) {
             try {
-                val newsList = service.getAllWeatherDetails()
-                emit(newsList)
+                val weatherList = cities?.let { service.getAllWeatherDetails(it) }
+                weatherList?.let { emit(it) }
             } catch (er: Exception) {
                 er.printStackTrace()
             }

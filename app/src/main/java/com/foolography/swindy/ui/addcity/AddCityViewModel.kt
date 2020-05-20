@@ -1,4 +1,4 @@
-package com.foolography.swindy.ui.weatherlist
+package com.foolography.swindy.ui.addcity
 
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ import com.foolography.swindy.util.AppStorage
 import javax.inject.Inject
 
 
-class WeatherListViewModel @Inject constructor(
+class AddCityViewModel @Inject constructor(
     private val weatherDataRepository: WeatherDataRepository,
     private val appStorage: AppStorage
 ) :

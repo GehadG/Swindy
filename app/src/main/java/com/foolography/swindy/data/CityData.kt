@@ -26,12 +26,12 @@ data class CityData(
     val name: String
 ) : Parcelable {
     fun getParsedDate(): String {
-        try {
+        return try {
             val sdf = SimpleDateFormat("E, dd.MM.yyyy")
             val netDate = Date(dayTime * 1000)
-            return sdf.format(netDate)
+            sdf.format(netDate)
         } catch (e: Exception) {
-            return e.toString()
+            e.toString()
         }
 
     }
