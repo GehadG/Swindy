@@ -3,32 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/newsCard"
+        android:id="@+id/cityCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/minMaxTemp"
+            app:layout_constraintTop_toTopOf="@id/cityName">
+
+            <ImageView
+                android:id="@+id/currentStateIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:imageFromUrl="@{cityData.logo}" />
+
+            <TextView
+                android:id="@+id/currentTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="@{String.valueOf(Math.round(cityData.main.currentTemp))+'°'}"
+                android:textColor="@color/primary_text"
+                android:textSize="26sp" />
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/titleTxt"
+            android:id="@+id/currentWeather"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/roboto"
+            android:text="@{cityData.weather.get(0).main}"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityName" />
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/roboto"
+            android:paddingBottom="6dp"
+            android:text="@{cityData.parsedDate}"
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentWeather" />
+
+        <TextView
+            android:id="@+id/cityName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="9dp"
+            android:fontFamily="@font/roboto"
             android:text="@{cityData.name}"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/detailTxt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="@{cityData.country.country}"
+            android:id="@+id/minMaxTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="18dp"
+            android:fontFamily="@font/roboto_condensed_regular"
+            android:text='@{String.valueOf(Math.round(cityData.main.minimumTemp))+"° / "+String.valueOf(Math.round(cityData.main.maximumTemp))+"°"}'
+            android:textColor="@color/secondary_text"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTxt" />
+            app:layout_constraintTop_toBottomOf="@id/container" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>

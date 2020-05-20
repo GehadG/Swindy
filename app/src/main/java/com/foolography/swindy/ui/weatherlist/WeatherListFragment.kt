@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foolography.swindy.data.CityData
 import com.foolography.swindy.databinding.WeatherListLayoutBinding
 import com.foolography.swindy.di.Injectable
 import com.foolography.swindy.di.injectViewModel
+import kotlinx.android.synthetic.main.weather_list_layout.*
 import javax.inject.Inject
 
 class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemClickListener {
@@ -67,6 +69,12 @@ class WeatherListFragment : Fragment(), Injectable, WeatherListAdapter.OnItemCli
     private fun populateNewsList(citiesList: List<CityData>) {
         mAdapter = WeatherListAdapter(citiesList, context!!, this)
         binding.recyclerView.adapter = mAdapter
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                this.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         binding.recyclerView.scrollToPosition(viewModel.scrollPosition.value!!)
 
         binding.swipeRefresh.setOnRefreshListener {

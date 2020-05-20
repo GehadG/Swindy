@@ -3,6 +3,8 @@ package com.foolography.swindy.data
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Parcelize
 data class CityData(
@@ -22,7 +24,22 @@ data class CityData(
     val id: Long,
     @field:SerializedName("name")
     val name: String
-) : Parcelable
+) : Parcelable {
+    fun getParsedDate(): String {
+        try {
+            val sdf = SimpleDateFormat("E, dd.MM.yyyy")
+            val netDate = Date(dayTime * 1000)
+            return sdf.format(netDate)
+        } catch (e: Exception) {
+            return e.toString()
+        }
+
+    }
+
+    fun getLogo(): String {
+        return "http://openweathermap.org/img/wn/${weather[0].icon}.png"
+    }
+}
 
 @Parcelize
 data class CountryData(

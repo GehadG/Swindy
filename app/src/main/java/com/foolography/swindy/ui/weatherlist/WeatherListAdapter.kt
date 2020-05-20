@@ -32,7 +32,7 @@ class WeatherListAdapter(
         fun bind(item: CityData) {
             binding.apply {
                 cityData = item
-                binding.newsCard.setOnClickListener { listener.onItemClick(item) }
+                binding.cityCard.setOnClickListener { listener.onItemClick(item) }
             }
         }
     }
